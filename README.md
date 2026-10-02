@@ -42,10 +42,21 @@ Failed ligands are reported in `manifest.csv` and do not stop the run.
 PubChem PUG REST 3D conformers (no key needed, requests are rate-limited to 4 per second). Examples use public
 drugs: aspirin, ibuprofen, caffeine.
 
-## Checked so far
-`ligprep --input examples/drugs.txt --out out/` prepares 3/3 molecules. The three PDBQT files were also read and
-docked by AutoDock Vina 1.2.5 (parse check only; exhaustiveness 1, so the scores mean nothing). Error paths checked
-by hand: unknown name, CID without a 3D conformer, malformed CID, empty or missing list.
+## Tests
+```bash
+pip install -e ".[dev]"
+pytest -q        # 50 tests, no network: PubChem is mocked with `responses`
+ruff check .
+```
+Open Babel must be installed for the conversion and end-to-end tests (they skip without it). CI runs both on
+Python 3.10 and 3.12. The suite covers input parsing, PubChem lookups (retries, 404, network errors, the
+User-Agent), each validation check including a formula mismatch and a flat structure, the Open Babel step and
+the CLI exit codes. Each check was also switched off by hand to confirm a test fails without it.
+
+## Checked by hand
+`ligprep --input examples/drugs.txt --out out/` prepares 3/3 molecules against live PubChem. The three PDBQT
+files were also read and docked by AutoDock Vina 1.2.5 (a parse check only: exhaustiveness 1, so the scores mean
+nothing).
 
 ## Limitations
 - Quality is that of PubChem's computed 3D conformer; no protonation at a given pH and no tautomer enumeration.
@@ -53,5 +64,5 @@ by hand: unknown name, CID without a 3D conformer, malformed CID, empty or missi
 - Ligands are prepared one at a time; PubChem rate limits make very large lists slow.
 
 ## Status
-v0.1.0 packaging done. Automated tests (mocked HTTP) and GitHub Actions CI come next.
+v0.1.0: packaging, tests and CI done.
 Part of a 30-project computational biology and scientific software portfolio.

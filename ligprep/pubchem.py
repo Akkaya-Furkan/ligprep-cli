@@ -17,7 +17,7 @@ class PubChem:
     def __init__(self, session: requests.Session | None = None, delay: float = 0.25,
                  retries: int = 3, timeout: float = 30.0):
         self.session = session or requests.Session()
-        self.session.headers.setdefault("User-Agent", USER_AGENT)
+        self.session.headers["User-Agent"] = USER_AGENT  # requests would otherwise send python-requests/x
         self.delay, self.retries, self.timeout = delay, retries, timeout
         self._last = 0.0
 
