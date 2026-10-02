@@ -1,0 +1,4 @@
+# example list: names, CIDs or SMILES (optional prefixes name: cid: smiles:)
+aspirin
+ibuprofen
+caffeine

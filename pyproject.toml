@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ligprep-cli"
+version = "0.1.0"
+description = "Turn compound names, PubChem CIDs or SMILES into validated, docking-ready PDBQT files"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["requests>=2.31", "rdkit>=2024.3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "responses>=0.25", "ruff>=0.5"]
+
+[project.scripts]
+ligprep = "ligprep.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ligprep*"]
+
+[tool.ruff]
+line-length = 100
